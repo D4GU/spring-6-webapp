@@ -74,7 +74,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void patchCustomer(UUID customerId, CustomerDTO customer) {
+    public Optional<CustomerDTO> patchCustomer(UUID customerId, CustomerDTO customer) {
         CustomerDTO tempCustomer = customerMap.get(customerId);
 
         if(StringUtils.hasText(customer.getCustomerName())) {
@@ -83,5 +83,6 @@ public class CustomerServiceImpl implements CustomerService {
         }
         customerMap.put(tempCustomer.getId(), tempCustomer);
 
+        return null;
     }
 }

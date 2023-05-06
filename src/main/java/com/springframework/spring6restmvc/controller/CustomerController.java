@@ -25,8 +25,13 @@ public class CustomerController {
 
     @PatchMapping(CUSTOMER_ID)
     public ResponseEntity patchCustomer(@PathVariable("customerId")UUID customerId, @RequestBody CustomerDTO customer) {
-        customerService.patchCustomer(customerId, customer);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+        ResponseEntity responseEntity = new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        if (customerService.patchCustomer(customerId, customer).isEmpty()) {
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new NotFoundException();
+        }
+        return responseEntity;
     }
     @DeleteMapping(CUSTOMER_ID)
     public ResponseEntity deleteById(@PathVariable("customerId") UUID customerId) {

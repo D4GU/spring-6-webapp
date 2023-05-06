@@ -107,7 +107,7 @@ class BeerControllerIT {
         final String beerName = "UPDATED";
         final BeerStyle beerStyle = BeerStyle.Lager;
         final String upc = "41233";
-        final Integer quantityOnHand = 20;
+        final Integer quantityOnHand = 40;
         final BigDecimal price = new BigDecimal(40);
 
         beerDTO.setBeerName(beerName);

@@ -6,6 +6,8 @@ import com.springframework.spring6restmvc.repositories.BeerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.yaml.snakeyaml.util.EnumUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +39,6 @@ public class BeerServiceJPA implements BeerService {
     @Override
     public Optional<BeerDTO> updateBeerById(UUID beerId, BeerDTO beer) {
         AtomicReference<Optional<BeerDTO>> atomicReference = new AtomicReference<>();
-
         beerRepository.findById(beerId).ifPresentOrElse(foundBeer -> {
             foundBeer.setBeerStyle(beer.getBeerStyle());
             foundBeer.setBeerName(beer.getBeerName());
@@ -66,10 +67,21 @@ public class BeerServiceJPA implements BeerService {
         AtomicReference<Optional<BeerDTO>> atomicReference = new AtomicReference<>();
 
         beerRepository.findById(beerId).ifPresentOrElse(foundBeer -> {
-            foundBeer.setBeerStyle(beer.getBeerStyle());
-            foundBeer.setBeerName(beer.getBeerName());
-            foundBeer.setPrice(beer.getPrice());
-            foundBeer.setUpc(beer.getUpc());
+            if (StringUtils.hasText(beer.getBeerName())) {
+                foundBeer.setBeerName(beer.getBeerName());
+            }
+            if (beer.getBeerStyle() != null) {
+                foundBeer.setBeerStyle(beer.getBeerStyle());
+            }
+            if (beer.getQuantityOnHand() != null) {
+                foundBeer.setQuantityOnHand(beer.getQuantityOnHand());
+            }
+            if (beer.getPrice() != null) {
+                foundBeer.setPrice(beer.getPrice());
+            }
+            if(beer.getUpc() != null) {
+                foundBeer.setUpc(beer.getUpc());
+            }
             atomicReference.set(Optional.of(beerMapper
                     .beerToBeerDto(beerRepository.save(foundBeer))));
         }, () -> {

@@ -40,7 +40,7 @@ class CustomerControllerIT {
     }
 
     @Test
-    void customerList() {
+    void testCustomerList() {
         List<CustomerDTO> customerDTOList = customerController.customerList();
         assertThat(customerDTOList.size()).isEqualTo(1);
     }
@@ -92,6 +92,27 @@ class CustomerControllerIT {
         assertThat(updatedCustomer.getCustomerName()).isEqualTo(customerName);
 
     }
+
+    @Rollback
+    @Transactional
+    @Test
+    void testPatchExistingCustomer() {
+        Customer customer = customerRepository.findAll().get(0);
+        CustomerDTO customerDTO = customerMapper.customerToCustomerDto(customer);
+        customerDTO.setId(null);
+        customerDTO.setVersion(null);
+
+        final String customerName = "UPDATED";
+        customerDTO.setCustomerName(customerName);
+
+        ResponseEntity responseEntity = customerController.patchCustomer(customer.getId(), customerDTO);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
+
+        Customer updatedCustomer = customerRepository.findById(customer.getId()).get();
+        assertThat(updatedCustomer.getCustomerName()).isEqualTo(customerName);
+
+    }
+
 
     @Rollback
     @Transactional
