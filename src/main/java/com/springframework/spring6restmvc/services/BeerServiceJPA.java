@@ -79,7 +79,7 @@ public class BeerServiceJPA implements BeerService {
             if (beer.getPrice() != null) {
                 foundBeer.setPrice(beer.getPrice());
             }
-            if(beer.getUpc() != null) {
+            if(StringUtils.hasText(beer.getUpc())) {
                 foundBeer.setUpc(beer.getUpc());
             }
             atomicReference.set(Optional.of(beerMapper

@@ -118,6 +118,6 @@ public class BeerServiceImpl implements BeerService {
             tempBeer.setUpc(beer.getUpc());
         }
         beerMap.put(beerId, tempBeer);
-        return null;
+        return Optional.of(tempBeer);
     }
 }
