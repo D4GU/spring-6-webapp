@@ -14,18 +14,15 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,7 +90,7 @@ class BeerControllerIT {
     @Test
     void testListBeer() {
         List<BeerDTO> beerDTOS = beerController.listBeers();
-        assertThat(beerDTOS.size()).isEqualTo(2);
+        assertThat(beerDTOS.size()).isEqualTo(2412);
     }
 
     @Test
@@ -158,7 +155,7 @@ class BeerControllerIT {
         beerDTO.setVersion(null);
 
         final String beerName = "UPDATED";
-        final BeerStyle beerStyle = BeerStyle.Lager;
+        final BeerStyle beerStyle = BeerStyle.LAGER;
         final String upc = "41233";
         final Integer quantityOnHand = 40;
         final BigDecimal price = new BigDecimal(40);
@@ -187,7 +184,7 @@ class BeerControllerIT {
     void testSaveNewBeer() {
         BeerDTO beerDTO = BeerDTO.builder()
                 .beerName("Testers Delight")
-                .beerStyle(BeerStyle.Lager)
+                .beerStyle(BeerStyle.LAGER)
                 .upc("123123213")
                 .price(new BigDecimal(10))
                 .quantityOnHand(10).build();
