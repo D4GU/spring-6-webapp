@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
 import java.sql.Timestamp;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -18,6 +19,17 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class BeerOrder {
+
+    public BeerOrder(UUID id, Long version, Timestamp createdDate, Timestamp lastModifiedDate, String customerRef, Customer customer, Set<BeerOrderLine> beerOrderLineSet, BeerOrderShipment beerOrderShipment) {
+        this.id = id;
+        this.version = version;
+        this.createdDate = createdDate;
+        this.lastModifiedDate = lastModifiedDate;
+        this.customerRef = customerRef;
+        this.setCustomer(customer);
+        this.beerOrderLineSet = beerOrderLineSet;
+        this.beerOrderShipment = beerOrderShipment;
+    }
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -45,7 +57,18 @@ public class BeerOrder {
 
     private String customerRef;
 
+    @OneToOne
+    private BeerOrderShipment beerOrderShipment;
+
     @ManyToOne
     private Customer customer;
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+        customer.getBeerOrderSet().add(this);
+    }
+
+    @OneToMany(mappedBy = "beerOrder")
+    private Set<BeerOrderLine> beerOrderLineSet;
 
 }
